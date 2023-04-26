@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 public class Biblioteca {
     static ArrayList<Libro> listaLibros = new ArrayList<>();
+    private ArrayList<Libro> libros;
+    private ArrayList<Usuario> usuarios;
+
     static Scanner sc = new Scanner(System.in);
     static int contadorLibros = 0;
 
@@ -41,6 +44,22 @@ public class Biblioteca {
     }
 
 //------------------------------------------------------------------------------------------------------
+
+        public Biblioteca() {
+            this.libros = new ArrayList<>();
+            this.usuarios = new ArrayList<>();
+        }
+
+        // Métodos para añadir y eliminar usuarios
+        public void addUsuario(Usuario usuario) {
+            usuarios.add(usuario);
+        }
+
+        public void removeUsuario(Usuario usuario) {
+            usuarios.remove(usuario);
+        }
+//------------------------------------------------------------------------------------------------------
+
     public static void menuGestionLibros() {
         int opcion;
 
@@ -112,7 +131,6 @@ public class Biblioteca {
         contadorLibros++;
         System.out.println("Libro añadido correctamente.");
     }
-
 
     public static void eliminarLibro(ArrayList<Libro> lista) {
         sc.nextLine(); // Limpiar el buffer del scanner
@@ -205,9 +223,7 @@ public class Biblioteca {
             }
         }
     }
-
 //------------------------------------------------------------------------------------------------------
-
     public static void menuGestionUsuarios() {
         int opcion;
 
@@ -217,6 +233,7 @@ public class Biblioteca {
             System.out.println("2. Eliminar usuario");
             System.out.println("3. Buscar usuario por NIF");
             System.out.println("4. Buscar usuario por nombre");
+            System.out.println("5. Crear reserva");
             System.out.println("0. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
             opcion = sc.nextInt();
@@ -243,9 +260,8 @@ public class Biblioteca {
             }
         } while (opcion != 0);
     }
-
-    private static ArrayList<Persona> UsuariosActivos = new ArrayList<>();
-    private static ArrayList<Persona> UsuariosInactivos = new ArrayList<>();
+    private static ArrayList<Usuario> UsuariosActivos = new ArrayList<>();
+    private static ArrayList<Usuario> UsuariosInactivos = new ArrayList<>();
 
     public static void añadirUsuario() {
         sc.nextLine(); // Limpiar el buffer del scanner
@@ -260,9 +276,10 @@ public class Biblioteca {
         System.out.print("Contraseña: ");
         String contraseña = sc.nextLine();
 
-        Persona bibliotecario = new Persona(nombre, apellidos, nif, contraseña);
-        UsuariosActivos.add(bibliotecario);
+        Usuario usuario = new Usuario(nombre, apellidos, nif, contraseña);
+        UsuariosActivos.add(usuario);
         System.out.println("Nuevo usuario añadido correctamente.");
+
     }
 
     public static void eliminarUsuario() {
@@ -290,15 +307,16 @@ public class Biblioteca {
         System.out.print("Introduzca el NIF del usuario que desea buscar: ");
         String nif = sc.nextLine();
 
-        for (Persona personal : UsuariosActivos) {
-            if (personal.getNif().equals(nif)) {
+        for (Usuario usuario : UsuariosActivos) {
+            if (usuario.getNif().equals(nif)) {
                 System.out.println("Usuario encontrado:");
-                System.out.println(personal.toString()); // Mostrar toda la información de la persona encontrada
+                System.out.println(usuario.toString()); // Mostrar toda la información del usuario encontrado
                 return;
             }
         }
 
         System.out.println("No se ha encontrado ningún usuario con el NIF especificado.");
+
     }
 
     public static void buscarUsuarioPorNombre() {
@@ -307,10 +325,10 @@ public class Biblioteca {
         System.out.print("Introduzca el nombre del usuario que desea buscar: ");
         String nombre = sc.nextLine();
 
-        for (Persona personal : UsuariosActivos) {
-            if (personal.getNombre().equals(nombre)) {
+        for (Usuario usuario : UsuariosActivos) {
+            if (usuario.getNombre().equals(nombre)) {
                 System.out.println("Usuario encontrado:");
-                System.out.println(personal.toString()); // Mostrar toda la información de la persona encontrada
+                System.out.println(usuario.toString()); // Mostrar toda la información de la persona encontrada
                 return;
             }
         }
@@ -425,7 +443,6 @@ public class Biblioteca {
                 return;
             }
         }
-
         System.out.println("No se ha encontrado ningún personal con el nombre especificado.");
     }
 }
