@@ -28,7 +28,7 @@ public class Biblioteca {
                     menuGestionPersonal();
                     break;
                 case 3:
-                    menuGestionReservas();
+                    menuGestionUsuarios();
                     break;
                 case 0:
                     System.out.println("Saliendo del programa...");
@@ -40,6 +40,7 @@ public class Biblioteca {
         } while (opcion != 0);
     }
 
+//------------------------------------------------------------------------------------------------------
     public static void menuGestionLibros() {
         int opcion;
 
@@ -205,15 +206,154 @@ public class Biblioteca {
         }
     }
 
+//------------------------------------------------------------------------------------------------------
 
+    public static void menuGestionUsuarios() {
+        int opcion;
 
+        do {
+            System.out.println("\n---------- GESTIÓN DE USUARIOS ----------");
+            System.out.println("1. Añadir nuevo usuario");
+            System.out.println("2. Eliminar usuario");
+            System.out.println("3. Buscar usuario por NIF");
+            System.out.println("4. Buscar usuario por nombre");
+            System.out.println("0. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+            opcion = sc.nextInt();
 
-    public static void menuGestionReservas() {
-        // Implementar gestión de reservas
+            switch (opcion) {
+                case 1:
+                    añadirUsuario();
+                    break;
+                case 2:
+                    eliminarUsuario();
+                    break;
+                case 3:
+                    buscarUsuarioPorNIF();
+                    break;
+                case 4:
+                    buscarUsuarioPorNombre();
+                    break;
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+                    break;
+            }
+        } while (opcion != 0);
+    }
+
+    private static ArrayList<Persona> UsuariosActivos = new ArrayList<>();
+    private static ArrayList<Persona> UsuariosInactivos = new ArrayList<>();
+
+    public static void añadirUsuario() {
+        sc.nextLine(); // Limpiar el buffer del scanner
+
+        System.out.println("\nIntroduzca los datos del usuario:");
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+        System.out.print("Apellidos: ");
+        String apellidos = sc.nextLine();
+        System.out.print("NIF: ");
+        String nif = sc.nextLine();
+        System.out.print("Contraseña: ");
+        String contraseña = sc.nextLine();
+
+        Persona bibliotecario = new Persona(nombre, apellidos, nif, contraseña);
+        UsuariosActivos.add(bibliotecario);
+        System.out.println("Nuevo usuario añadido correctamente.");
+    }
+
+    public static void eliminarUsuario() {
+        sc.nextLine(); // Limpiar el buffer del scanner
+
+        System.out.print("Introduzca el NIF del usuario que desea eliminar: ");
+        String nif = sc.nextLine();
+
+        for (int i = 0; i < UsuariosActivos.size(); i++) {
+            if (UsuariosActivos.get(i).getNif().equals(nif)) {
+                UsuariosInactivos.add(UsuariosActivos.get(i));
+                UsuariosActivos.remove(i);
+                System.out.println("Usuario eliminado correctamente.");
+                return;
+            }
+        }
+
+        System.out.println("No se ha encontrado ningún usuario con el NIF especificado.");
     }
 
 
+    public static void buscarUsuarioPorNIF() {
+        sc.nextLine(); // Limpiar el buffer del scanner
 
+        System.out.print("Introduzca el NIF del usuario que desea buscar: ");
+        String nif = sc.nextLine();
+
+        for (Persona personal : UsuariosActivos) {
+            if (personal.getNif().equals(nif)) {
+                System.out.println("Usuario encontrado:");
+                System.out.println(personal.toString()); // Mostrar toda la información de la persona encontrada
+                return;
+            }
+        }
+
+        System.out.println("No se ha encontrado ningún usuario con el NIF especificado.");
+    }
+
+    public static void buscarUsuarioPorNombre() {
+        sc.nextLine(); // Limpiar el buffer del scanner
+
+        System.out.print("Introduzca el nombre del usuario que desea buscar: ");
+        String nombre = sc.nextLine();
+
+        for (Persona personal : UsuariosActivos) {
+            if (personal.getNombre().equals(nombre)) {
+                System.out.println("Usuario encontrado:");
+                System.out.println(personal.toString()); // Mostrar toda la información de la persona encontrada
+                return;
+            }
+        }
+
+        System.out.println("No se ha encontrado ningún usuario con el nombre especificado.");
+    }
+
+//------------------------------------------------------------------------------------------------------
+    public static void menuGestionPersonal() {
+        int opcion;
+
+        do {
+            System.out.println("\n---------- GESTIÓN DE PERSONAL ----------");
+            System.out.println("1. Añadir personal");
+            System.out.println("2. Eliminar personal");
+            System.out.println("3. Buscar personal por NIF");
+            System.out.println("4. Buscar personal por nombre");
+            System.out.println("0. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+            opcion = sc.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    añadirBibliotecario();
+                    break;
+                case 2:
+                    eliminarBibliotecario();
+                    break;
+                case 3:
+                    buscarPersonalPorNIF();
+                    break;
+                case 4:
+                    buscarPersonalPorNombre();
+                    break;
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+                    break;
+            }
+        } while (opcion != 0);
+    }
 
     public static ArrayList<Persona> bibliotecariosActivos = new ArrayList<>();
     public static ArrayList<Persona> bibliotecariosInactivos = new ArrayList<>();
@@ -287,41 +427,5 @@ public class Biblioteca {
         }
 
         System.out.println("No se ha encontrado ningún personal con el nombre especificado.");
-    }
-
-    public static void menuGestionPersonal() {
-        int opcion;
-
-        do {
-            System.out.println("\n---------- GESTIÓN DE PERSONAL ----------");
-            System.out.println("1. Añadir personal");
-            System.out.println("2. Eliminar personal");
-            System.out.println("3. Buscar personal por NIF");
-            System.out.println("4. Buscar personal por nombre");
-            System.out.println("0. Volver al menú principal");
-            System.out.print("Seleccione una opción: ");
-            opcion = sc.nextInt();
-
-            switch (opcion) {
-                case 1:
-                    añadirBibliotecario();
-                    break;
-                case 2:
-                    eliminarBibliotecario();
-                    break;
-                case 3:
-                    buscarPersonalPorNIF();
-                    break;
-                case 4:
-                    buscarPersonalPorNombre();
-                    break;
-                case 0:
-                    System.out.println("Volviendo al menú principal...");
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
-                    break;
-            }
-        } while (opcion != 0);
     }
 }
